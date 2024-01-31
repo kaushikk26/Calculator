@@ -11,29 +11,13 @@ import kotlin.NumberFormatException
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
-    lateinit var ftextview:TextView
-    lateinit var textview: TextView
-    lateinit var one: Button
-    lateinit var two: Button
-    lateinit var three: Button
-    lateinit var four: Button
-    lateinit var five: Button
-    lateinit var six: Button
-    lateinit var seven: Button
-    lateinit var eight: Button
-    lateinit var nine: Button
-    lateinit var zero: Button
-    lateinit var point: Button
-    lateinit var pluse: Button
-    lateinit var equal: Button
-    lateinit var clear: Button
-    lateinit var minus: Button
-    lateinit var per: Button
-    lateinit var multi: Button
-    lateinit var div: Button
-    lateinit var delete: Button
-    lateinit var plusminus: Button
 
+    lateinit var operator:String
+    lateinit var main_textview : TextView
+    lateinit var secound : TextView
+    var tempNum : Double = 0.0
+    var firstnum :Double=0.0
+    var secondnum :Double=0.0
     var array = ArrayList<Button>()
 
     @SuppressLint("SetTextI18n")
@@ -41,218 +25,198 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ftextview=findViewById(R.id.ftext)
-        textview=findViewById(R.id.text)
+        secound=findViewById(R.id.ftext)
+        main_textview =findViewById(R.id.text)
 
-        one = findViewById(R.id.one)
-        two = findViewById(R.id.two)
-        three = findViewById(R.id.three)
-        four = findViewById(R.id.four)
-        five = findViewById(R.id.five)
-        six = findViewById(R.id.six)
-        seven = findViewById(R.id.seven)
-        eight = findViewById(R.id.eight)
-        nine = findViewById(R.id.nine)
-        zero = findViewById(R.id.zero)
-        point = findViewById(R.id.point)
-        clear = findViewById(R.id.clear)
-        pluse = findViewById(R.id.plus)
-        minus = findViewById(R.id.minus)
-        multi = findViewById(R.id.multiply)
-        div = findViewById(R.id.div)
-        equal = findViewById(R.id.equals)
-        per = findViewById(R.id.percent)
-        delete = findViewById(R.id.delet)
-        plusminus = findViewById(R.id.plusminus)
-
-
-        array.add(one)
-        array.add(two)
-        array.add(three)
-        array.add(four)
-        array.add(five)
-        array.add(six)
-        array.add(seven)
-        array.add(eight)
-        array.add(nine)
-        array.add(zero)
-        array.add(plusminus)
-        array.add(point)
-        array.add(pluse)
-        array.add(equal)
-        array.add(clear)
-        array.add(minus)
-        array.add(multi)
-        array.add(div)
-        array.add(per)
-        array.add(delete)
-
-        click(0)
-        click(1)
-        click(2)
-        click(3)
-        click(4)
-        click(5)
-        click(6)
-        click(7)
-        click(8)
-        click(9)
-        click(10)
-        click(11)
-        click(12)
-        click(13)
-        click(14)
-        click(15)
-        click(16)
-        click(17)
-        click(18)
-        click(19)
-    }
-
-    var firstvalue = 0.0
-    var secondvalue = 0.0
-    var tempvalue = 0.0
-    var anss = 0.0
-
-    fun click(i: Int) {
-        array[i].setOnClickListener {
-
-            if (array[i].text.toString().equals("+") || array[i].text.toString()
-                    .equals("-") || array[i].text.toString().equals("*") || array[i].text.toString()
-                    .equals("/")
-            ) {
-                try {
-                    procees(array[i].text.toString(), i)
-                } catch (i: Exception) {
-
-                }
-            } else if (array[i].text.toString().equals("=")) {
-                try {
-                    answer(i)
-                } catch (i: Exception) {
-
-                }
-
-            } else if (array[i].text.toString().equals("AC")) {
-                firstvalue = 0.0
-                secondvalue = 0.0
-                tempvalue = 0.0
-                anss = 0.0
-                textview.setText("")
-                ftextview.setText("")
-                OperatorSign.plus = false
-                OperatorSign.minus = false
-                OperatorSign.multi = false
-                OperatorSign.div = false
-            } else if (array[i].text.toString().equals(".")) {
-                if (1 > textview.text.indexOf(".")) {
-                    if (textview.text.isEmpty()) {
-                        textview.setText(textview.text.toString() + "0.")
-                    } else {
-                        textview.setText(textview.text.toString() + ".")
-                    }
-                }
-            } else if (array[i].text.toString().equals("%")) {
-                try {
-                    firstvalue = textview.text.toString().toDouble() / 100
-                    textview.setText(firstvalue.toString())
-                } catch (i: Exception) {
-
-                }
-            } else if (array[i].text.toString().equals("D")) {
-                try {
-                    textview.setText(textview.text.substring(0, textview.text.length - 1))
-                } catch (i: Exception) {
-
-                }
-            } else if (array[i].text.toString().equals("0")) {
-
-                if (textview.text.toString().isEmpty()) {
-                    textview.setText("0")
-                } else if (textview.text.equals("0")) {
-                    textview.setText("0")
-                } else if (textview.text.toString() != "0") {
-                    textview.setText(textview.text.toString() + "0")
-                }
-
-            } else if (array[i].text.toString().equals("+/-")) {
-
-                if (textview.text.isEmpty()) {
-                    textview.setText("-")
-                } else if (textview.text.startsWith("-")) {
-                    textview.setText(textview.text.substring(1))
-                } else {
-                    textview.setText("-" + textview.text)
-                }
-            } else {
-                textview.setText(textview.text.toString() + array[i].text)
+        val buttons = listOf<Button>(
+            findViewById(R.id.one),
+            findViewById(R.id.two),
+            findViewById(R.id.three),
+            findViewById(R.id.four),
+            findViewById(R.id.five),
+            findViewById(R.id.six),
+            findViewById(R.id.seven),
+            findViewById(R.id.eight),
+            findViewById(R.id.nine),
+            findViewById(R.id.zero),
+            findViewById(R.id.point),
+            findViewById(R.id.clear),
+            findViewById(R.id.plus),
+            findViewById(R.id.minus),
+            findViewById(R.id.multiply),
+            findViewById(R.id.div),
+            findViewById(R.id.equals),
+            findViewById(R.id.percent),
+            findViewById(R.id.delet),
+            findViewById(R.id.plusminus)
+        )
+        for (button in buttons){
+            button.setOnClickListener {
+                runcode(button.text.toString())
             }
         }
     }
+    private fun runcode(input:String ) {
+        when (input) {
+            "+", "-", "*", "/" -> {
+                try {
+                    operator = input
+                    tempNum = main_textview.text.toString().toDouble()
+                    if(OperatorSign.plus)
+                    {
+                        firstnum=tempNum+firstnum
+                        //Log.e("=====", "run-code:$firstnum ", )
+                    }
+                    else  if(OperatorSign.minus) {
+                        firstnum = tempNum - firstnum
+                    }else if(OperatorSign.multi){
+                        firstnum=tempNum*firstnum
+                    }else if(OperatorSign.equals("*")){
+                        OperatorSign.multi=true
+                        Log.e("===11==", "run-code:$firstnum ", )
+                    }else if(OperatorSign.div){
+                        firstnum=tempNum/firstnum
+                    }else{
+                        firstnum=tempNum
+                    }
 
-    private fun answer(i: Int) {
-        secondvalue = textview.text.toString().toDouble()
 
-        if (OperatorSign.plus) {
-            anss = firstvalue + secondvalue
-            ftextview.text="$firstvalue"+"$secondvalue"
-        } else if (OperatorSign.minus) {
-            anss = firstvalue - secondvalue
-            ftextview.text="$firstvalue"+"-"+"$secondvalue"
-        } else if (OperatorSign.multi) {
-            anss = firstvalue * secondvalue
-            ftextview.text="$firstvalue"+"*"+"$secondvalue"
-        } else if (OperatorSign.div) {
-            anss = firstvalue / secondvalue
-            ftextview.text="$firstvalue"+"/"+"$secondvalue"
+                    if(operator.equals("+"))
+                    {
+                        OperatorSign.plus = true
+                    }else if(operator.equals("-")){
+                        OperatorSign.minus=true
+                    }else if(operator.equals("*")){
+                        OperatorSign.multi=true
+                    }else if(operator.equals("/")){
+                        OperatorSign.div=true
+                    }
+                    main_textview.text = ""
+                }
+                catch ( i : NumberFormatException)
+                {
+
+                }
+            }
+            "=" -> {
+                try {
+                    secondnum = main_textview.text.toString().toDouble()
+                    secound.text=firstnum.toString()+(operator)+secondnum.toString()
+                    val result = when (operator) {
+                        "+" ->
+                        {
+                            try {
+                                firstnum + secondnum
+                            }
+                            catch ( i : NullPointerException)
+                            {
+
+                            }
+                        }
+                        "-"->{
+                            try {
+                                firstnum-secondnum
+                            }
+                            catch (i:NullPointerException){
+
+                            }
+                        }
+                        "*" ->
+                        {
+                            try {
+                                firstnum * secondnum
+                            }
+                            catch (i:NullPointerException){
+                            }
+                        }
+                        "/" ->
+                        {
+                            try {
+                                firstnum / secondnum
+                            }
+                            catch (i:NumberFormatException){
+
+                            }
+                        }
+                        else -> {
+                            0.0
+                        }
+                    }
+                    main_textview.text = result.toString()
+                    firstnum=0.0
+                }
+                catch (i:NumberFormatException){
+
+                }
+            }
+            "AC" -> {
+                firstnum = 0.0
+                secondnum = 0.0
+                main_textview.text = ""
+                secound.text=""
+                OperatorSign.plus = false
+                OperatorSign.div =false
+                OperatorSign.multi=false
+                OperatorSign.minus=false
+            }
+
+            "%" -> {
+                try {
+                    firstnum = (main_textview.text.toString().toDouble()) / 100
+                    main_textview.setText(firstnum.toString()+"%")
+                }
+                catch (i:NumberFormatException){
+
+                }
+            }
+            "D" -> {
+                try {
+                    main_textview.setText(main_textview.text.substring(0, main_textview.text.length - 1))
+                }
+                catch (i:StringIndexOutOfBoundsException){
+
+                }
+            }
+            "+/-" -> {
+                if (main_textview.text.isEmpty()) {
+                    main_textview.setText("-")
+                } else if (main_textview.text.startsWith("-")) {
+                    main_textview.setText(main_textview.text.substring(1))
+                } else {
+                    main_textview.setText("-" + main_textview.text)
+                }
+            }
+            "." -> {
+                if (1 > main_textview.text.indexOf(".")) {
+                    if (main_textview.text.isEmpty()) {
+                        main_textview.setText(main_textview.text.toString() + "0.")
+                    } else {
+                        main_textview.setText(main_textview.text.toString() + ".")
+                    }
+                }
+            }
+            "0" -> {
+                if (main_textview.text.toString().isEmpty()) {
+                    main_textview.setText("0")
+                } else if (main_textview.text.equals("0")) {
+                    main_textview.setText("0")
+                } else if (main_textview.text.toString() != "0") {
+                    main_textview.setText(main_textview.text.toString() + "0")
+                }
+            }
+            else -> {
+                main_textview.append(input)
+            }
         }
-        textview.setText(anss.toString())
-        firstvalue = 0.0
-        secondvalue = 0.0
-        anss = 0.0
-        OperatorSign.plus = false
-        OperatorSign.minus = false
-        OperatorSign.multi = false
-        OperatorSign.div = false
-
-
-    }
-
-    private fun procees(s: String, i: Int) {
-
-        tempvalue = textview.text.toString().toDouble()
-
-        if (OperatorSign.plus) {
-            firstvalue = tempvalue + firstvalue
-        } else if (OperatorSign.minus) {
-            firstvalue = tempvalue - firstvalue
-        } else if (OperatorSign.multi) {
-            firstvalue = tempvalue * firstvalue
-        } else if (OperatorSign.div) {
-            firstvalue = tempvalue / firstvalue
-        } else {
-            firstvalue = tempvalue
-        }
-
-        if (array[i].text.toString().equals("+")) {
-            OperatorSign.plus = true
-        } else if (array[i].text.toString().equals("-")) {
-            OperatorSign.minus = true
-        } else if (array[i].text.toString().equals("*")) {
-            OperatorSign.multi = true
-        } else if (array[i].text.toString().equals("/")) {
-            OperatorSign.div = true
-        }
-
-        textview.setText("")
     }
 }
+class OperatorSign
+{
+    companion object{
+        var plus : Boolean = false
+        var minus : Boolean = false
+        var multi : Boolean = false
+        var div : Boolean = false
 
-class OperatorSign {
-    companion object {
-        var plus: Boolean = false
-        var minus: Boolean = false
-        var multi: Boolean = false
-        var div: Boolean = false
     }
 }
